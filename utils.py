@@ -80,20 +80,3 @@ def check_IPv6_support(dns_port):
     except Exception as e:
         return False
     return True
-
-import logging
-
-def check_trace_for_root_loops(trace, roots):
-    trace_ips = [site.ip for site in trace]
-    roots_ips = [root.ip for root in roots]
-    last_root_sequence = []
-    for i, ip in enumerate(trace_ips):
-        if ip in roots_ips:
-            logging.debug("[ROOT_LOOP_CHECK] Previous root sequence is:\n\t" + '\n\t'.join(trace_ips[i-len(last_root_sequence):i]))
-            logging.debug("[ROOT_LOOP_CHECK] Current root sequence is:\n\t" + '\n\t'.join(trace_ips[i:i+len(last_root_sequence)]))
-            if trace_ips[i:i+len(last_root_sequence)] == trace_ips[i-len(last_root_sequence):i]:
-                logging.info("[ROOT_LOOP_CHECK] Found root loop, stopping recursive steps...:")
-                return True
-            last_root_sequence = []
-        last_root_sequence.append(ip)
-    return False

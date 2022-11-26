@@ -2,7 +2,7 @@ import logging
 import sys
 import time
 from cache import Cache
-from constants import APP_PORT, DNS_PORT, MAX_STEPS, LOG_PATH, ROOT_SERVERS
+from constants import APP_ADDRESS, APP_PORT, DNS_PORT, MAX_STEPS, LOG_PATH, ROOT_SERVERS
 from distutils.util import strtobool
 from dns_parser import resolve_step
 from flask import Flask, request
@@ -19,7 +19,7 @@ def index():
     return "<h1>Recursive DNS-resolver</h1><br/>Try to use query /get-records?domain=&trace=<br/>Detailes can be found on <a href='https://github.com/noath/dns-resolver'>github repository</a>.<br/><br/>Author: <a href='https://t.me/noath'>@Noath (telegram)</a>"
 
 
-@app.route("/update-cache")
+@app.route("/update-cache", methods=['GET'])
 def update_cache():
     try:
         cache = app.config["cache"]
@@ -30,7 +30,7 @@ def update_cache():
         return "Failed to update cache"
 
 
-@app.route("/get-records")
+@app.route("/get-records", methods=['GET'])
 def get_records():
     ipv_string = "Using IPv4 " + (
         "and IPv6 both.<br/><br/>" if app.config["ipv6_support"] else "only.<br/><br/>"
@@ -101,5 +101,7 @@ if __name__ == "__main__":
         max_cache_size = -1
     app.config["cache"] = Cache(max_size=max_cache_size)
     app.config["ipv6_support"] = check_IPv6_support(DNS_PORT)
-    http_server = WSGIServer(('', APP_PORT), app)
+    # app.run(debug=False, port=APP_PORT)
+    http_server = WSGIServer((APP_ADDRESS, APP_PORT), app)
+    print(f'Serving on {APP_ADDRESS}:{APP_PORT}...')
     http_server.serve_forever()

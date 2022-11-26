@@ -1,6 +1,7 @@
 from utils import Site
 
 
+APP_ADDRESS = '127.0.0.1'
 APP_PORT = 5000
 DNS_PORT = 53
 MAX_STEPS = 16
