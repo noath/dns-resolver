@@ -1,20 +1,22 @@
 import logging
 import sys
 import time
-from flask import Flask, request
-from distutils.util import strtobool
 from cache import Cache
 from constants import APP_PORT, DNS_PORT, MAX_STEPS, LOG_PATH, ROOT_SERVERS
+from distutils.util import strtobool
 from dns_parser import resolve_step
+from flask import Flask, request
+from gevent.pywsgi import WSGIServer
 from utils import QType, check_IPv6_support
 
-logging.basicConfig(level=logging.DEBUG, filename=LOG_PATH, filemode="w")
+
+logging.basicConfig(level=logging.INFO, filename=LOG_PATH, filemode="w")
 app = Flask(__name__)
 
 
 @app.route("/")
 def index():
-    return "DNS-resolver.<br/>Author: @Noath (telegram)"
+    return "<h1>Recursive DNS-resolver</h1><br/>Try to use query /get-records?domain=&trace=<br/>Detailes can be found on <a href='https://github.com/noath/dns-resolver'>github repository</a>.<br/><br/>Author: <a href='https://t.me/noath'>@Noath (telegram)</a>"
 
 
 @app.route("/update-cache")
@@ -28,7 +30,7 @@ def update_cache():
         return "Failed to update cache"
 
 
-@app.route("/get-a-records")
+@app.route("/get-records")
 def get_records():
     ipv_string = "Using IPv4 " + (
         "and IPv6 both.<br/><br/>" if app.config["ipv6_support"] else "only.<br/><br/>"
@@ -99,4 +101,5 @@ if __name__ == "__main__":
         max_cache_size = -1
     app.config["cache"] = Cache(max_size=max_cache_size)
     app.config["ipv6_support"] = check_IPv6_support(DNS_PORT)
-    app.run(debug=True, port=APP_PORT)
+    http_server = WSGIServer(('', APP_PORT), app)
+    http_server.serve_forever()

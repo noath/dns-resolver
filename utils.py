@@ -89,9 +89,8 @@ def check_trace_for_root_loops(trace, roots):
     last_root_sequence = []
     for i, ip in enumerate(trace_ips):
         if ip in roots_ips:
-            logging.debug("[ROOT_LOOP_CHECK] Trace is:\n\t\t" + '\n\t\t'.join(trace_ips))
-            logging.debug("[ROOT_LOOP_CHECK] Previous root sequence is:\n\t\t\t\t\t" + '\n\t\t\t\t\t'.join(trace_ips[i-len(last_root_sequence):i]))
-            logging.debug("[ROOT_LOOP_CHECK] Current root sequence is:\n\t\t\t\t\t" + '\n\t\t\t\t\t'.join(trace_ips[i:i+len(last_root_sequence)]))
+            logging.debug("[ROOT_LOOP_CHECK] Previous root sequence is:\n\t" + '\n\t'.join(trace_ips[i-len(last_root_sequence):i]))
+            logging.debug("[ROOT_LOOP_CHECK] Current root sequence is:\n\t" + '\n\t'.join(trace_ips[i:i+len(last_root_sequence)]))
             if trace_ips[i:i+len(last_root_sequence)] == trace_ips[i-len(last_root_sequence):i]:
                 logging.info("[ROOT_LOOP_CHECK] Found root loop, stopping recursive steps...:")
                 return True
