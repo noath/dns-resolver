@@ -60,12 +60,12 @@ def get_records():
     for root in ROOT_SERVERS:
         trace = []
 
-        res_nodes_ipv4 = resolve_step(domain, root, root, trace, 0, QType.A, DNS_PORT, MAX_STEPS, ROOT_SERVERS)
+        res_nodes_ipv4 = resolve_step(domain, root, root, trace, 0, QType.A, DNS_PORT, MAX_STEPS )
         res_nodes_ipv4 = res_nodes_ipv4 if res_nodes_ipv4 is not None else []
 
         if app.config["ipv6_support"]:
             try:
-                res_nodes_ipv6 = resolve_step(domain, root, root, trace, 0, QType.AAAA, DNS_PORT, MAX_STEPS, ROOT_SERVERS)
+                res_nodes_ipv6 = resolve_step(domain, root, root, trace, 0, QType.AAAA, DNS_PORT, MAX_STEPS )
                 res_nodes_ipv6 = res_nodes_ipv6 if res_nodes_ipv6 is not None else []
             except Exception as e:
                 logging.error(

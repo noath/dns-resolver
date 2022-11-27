@@ -1,6 +1,6 @@
 import logging
 import socket
-from utils import Section, Site, QType, make_dns_query, send_udp_message, check_trace_for_root_loops
+from utils import Section, Site, QType, make_dns_query, send_udp_message
 
 
 def parse_rr_name(resp, begin):
