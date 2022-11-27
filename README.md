@@ -14,11 +14,13 @@
 ### Linux/MacOS
 ```
 git clone https://github.com/noath/dns-resolver.git
+cd dns-resolver
 python3 -m dns_resolver
 ```
 ### Windows
 ```
 git clone https://github.com/noath/dns-resolver.git
+cd dns-resolver
 python -m dns_resolver
 ```
 
@@ -27,11 +29,13 @@ python -m dns_resolver
 ### Linux/MacOS
 ```
 git clone https://github.com/noath/dns-resolver.git
+cd dns-resolver
 python3 -m dns_resolver 10
 ```
 ### Windows
 ```
 git clone https://github.com/noath/dns-resolver.git
+cd dns-resolver
 python -m dns_resolver 10
 ```
 
